@@ -56,8 +56,8 @@
           body: formData,
         })
         
-          body.classList.remove("animate-pulse"); // Remove loading animation
-          body.style.pointerEvents = "auto"; // Re-enable interactions
+          document.body.classList.remove("animate-pulse"); // Remove loading animation
+          document.body.style.pointerEvents = "auto"; // Re-enable interactions
           if (!response.ok) {
             alert("Помилка при завантаженні файлу");
             return;
