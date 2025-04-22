@@ -1,22 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Upload</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-</head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
+  </head>
+  <body class="bg-gray-100 flex items-center justify-center h-screen">
     <div class="bg-white p-6 rounded shadow-md w-96">
-        <h1 class="text-xl font-bold mb-4">Загрузити файл .xlsx</h1>
-        <p class="mb-4">В файлі повинні бути листи: Лег, Комерційні, Груз, Прицепы, Спецтехника та сх, автобусы</p>
-        <p class="mb-4">В таблицях повинні бути колонки: Марка, Модель</p>
-        <form action="/upload" method="POST" enctype="multipart/form-data">
-            <input type="password" name="password" placeholder="Пароль" class="mb-4 border border-gray-300 rounded p-2 w-full" required>
-            <input type="file" name="file" accept=".xlsx" class="mb-4 border border-gray-300 rounded p-2 w-full" required>
-            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Загрузити</button>
-        </form>
+      <h1 class="text-xl font-bold mb-4">Загрузити файл .xlsx</h1>
+      <p class="mb-4">
+        В файлі повинні бути листи: Лег, Комерційні, Груз, Прицепы, Спецтехника
+        та сх, автобусы
+      </p>
+      <p class="mb-4">В таблицях повинні бути колонки: Марка, Модель</p>
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input
+          type="password"
+          name="password"
+          placeholder="Пароль"
+          class="mb-4 border border-gray-300 rounded p-2 w-full"
+          required
+        />
+        <input
+          type="file"
+          name="file"
+          accept=".xlsx"
+          class="mb-4 border border-gray-300 rounded p-2 w-full"
+          required
+        />
+        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">
+          Загрузити
+        </button>
+      </form>
     </div>
-    
-</body>
+    <script>
+      const form = document.querySelector("form");
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent the default form submission
+        const password = document.querySelector('input[name="password"]').value;
+        const fileInput = document.querySelector('input[name="file"]');
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+
+        document.body.classList.add("animate-pulse"); // Change background color to indicate loading
+        document.body.style.pointerEvents = "none"; // Disable interactions
+
+        fetch("/generate/generate-scripts", {
+          method: "POST",
+          headers: {
+            Authorization: password, // Include the password in the headers
+            "Content-Type": "multipart/form-data",
+          },
+          body: formData,
+        }).finally((response) => {
+          body.classList.remove("animate-pulse"); // Remove loading animation
+          body.style.pointerEvents = "auto"; // Re-enable interactions
+          alery("Файл завантажено");
+        });
+      });
+    </script>
+  </body>
 </html>
