@@ -22,8 +22,8 @@ const keys = {
 
 router.post('/generate-scripts', upload.single('file'), async (req, res) => {
   try {
-    console.log(req.headers['Authorization'], process.env.AUTH_KEY);
-    if (req.headers['Authorization'] !== process.env.AUTH_KEY) {
+    console.log(req.headers['authorization'], process.env.AUTH_KEY);
+    if (req.headers['authorization'] !== process.env.AUTH_KEY) {
       return res.status(403).json({ error: 'Unauthorized' });
     }
     if (!req.file) {
