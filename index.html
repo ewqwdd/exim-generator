@@ -37,7 +37,7 @@
     <script>
       const form = document.querySelector("form");
 
-      form.addEventListener("submit", function (event) {
+      form.addEventListener("submit", async function (event) {
         event.preventDefault(); // Prevent the default form submission
         const password = document.querySelector('input[name="password"]').value;
         const fileInput = document.querySelector('input[name="file"]');
@@ -48,17 +48,22 @@
         document.body.classList.add("animate-pulse"); // Change background color to indicate loading
         document.body.style.pointerEvents = "none"; // Disable interactions
 
-        fetch("/generate/generate-scripts", {
+        await fetch("/generate/generate-scripts", {
           method: "POST",
           headers: {
             Authorization: password, // Include the password in the headers
           },
           body: formData,
-        }).finally((response) => {
+        })
+        
           body.classList.remove("animate-pulse"); // Remove loading animation
           body.style.pointerEvents = "auto"; // Re-enable interactions
-          alery("Файл завантажено");
-        });
+          if (!response.ok) {
+            alert("Помилка при завантаженні файлу");
+            return;
+          }
+          alert("Файл завантажено");
+
       });
     </script>
   </body>
